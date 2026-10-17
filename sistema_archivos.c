@@ -67,7 +67,7 @@ typedef struct {
     uint32_t tamano;
     uint32_t bloqueInicial;
     uint32_t cantidadBloques;
-    uint8_t en_uso; 
+    uint8_t enUso; 
     char relleno[TAMANO_INODO - MAX_LARGO_NOMBRE - 3 * 4 - 1];
 } Inodo;
 
@@ -176,7 +176,7 @@ static int AbrirDisco(void) {
 */
 static int BuscarArchivo(const char *nombre) {
     for (int i = 0; i < MAX_ARCHIVOS; i++) {
-        if (tablaInodos[i].en_uso && strcmp(tablaInodos[i].nombre, nombre) == 0)
+        if (tablaInodos[i].enUso && strcmp(tablaInodos[i].nombre, nombre) == 0)
             return i;
     }
     return -1;
@@ -192,7 +192,7 @@ static int BuscarArchivo(const char *nombre) {
 */
 static int BuscarInodoLibre(void) {
     for (int i = 0; i < MAX_ARCHIVOS; i++) {
-        if (!tablaInodos[i].en_uso)
+        if (!tablaInodos[i].enUso)
             return i;
     }
     return -1;
@@ -304,7 +304,7 @@ static void ComandoCreate(const char *nombre, const char *contenido) {
     inodo->tamano           = tamanoContenido;
     inodo->bloqueInicial   = PRIMER_BLOQUE_DATOS + primerBloque;
     inodo->cantidadBloques = bloquesNecesarios;
-    inodo->en_uso           = 1;
+    inodo->enUso           = 1;
 
     superbloque.inodosLibres--;
     superbloque.bloques_libres -= bloquesNecesarios;
@@ -323,7 +323,7 @@ static void ComandoLS(void) {
     printf("%-32s %-14s %s\n", "Nombre", "Tamano", "Bloque");
 
     for (int i = 0; i < MAX_ARCHIVOS; i++) {
-        if (!tablaInodos[i].en_uso)
+        if (!tablaInodos[i].enUso)
             continue;
 
         char tamanoTexto[32];
